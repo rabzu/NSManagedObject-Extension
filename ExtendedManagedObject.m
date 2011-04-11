@@ -60,15 +60,11 @@
 }
 
 
-+ (ExtendedManagedObject*) createManagedObjectFromDictionary:(NSDictionary*)dict
-                                                   inContext:(NSManagedObjectContext*)context
+- (void) populateFromDictionary:(NSDictionary*)dict
 {
-    NSString* class = [dict objectForKey:@"class"];
-    ExtendedManagedObject* newObject =
-        (ExtendedManagedObject*)[NSEntityDescription insertNewObjectForEntityForName:class
-                                                              inManagedObjectContext:context];
+    NSManagedObjectContext* context = [self managedObjectContext];
 
-    for (NSString* key in [dict allKeys]) {
+    for (NSString* key in dict) {
         if ([key isEqualToString:@"class"]) {
             continue;
         }
@@ -103,6 +99,17 @@
             [newObject setValue:value forKey:key];
         }
     }
+}
+
++ (ExtendedManagedObject*) createManagedObjectFromDictionary:(NSDictionary*)dict
+                                                   inContext:(NSManagedObjectContext*)context
+{
+    NSString* class = [dict objectForKey:@"class"];
+    ExtendedManagedObject* newObject =
+        (ExtendedManagedObject*)[NSEntityDescription insertNewObjectForEntityForName:class
+                                                              inManagedObjectContext:context];
+
+    [newObject populateFromDictionary:dict];
 
     return newObject;
 }
