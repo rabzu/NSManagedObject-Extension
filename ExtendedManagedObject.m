@@ -77,7 +77,7 @@
                 [ExtendedManagedObject createManagedObjectFromDictionary:(NSDictionary*)value
                                                                inContext:context];
 
-            [newObject setValue:relatedObject forKey:key];
+            [self setValue:relatedObject forKey:key];
         }
         else if ([value isKindOfClass:[NSSet class]]) {
             // This is a to-many relationship
@@ -85,7 +85,7 @@
 
             // Get a proxy set that represents the relationship, and add related objects to it.
             // (Note: this is provided by Core Data)
-            NSMutableSet* relatedObjects = [newObject mutableSetValueForKey:key];
+            NSMutableSet* relatedObjects = [self mutableSetValueForKey:key];
 
             for (NSDictionary* relatedObjectDict in relatedObjectDictionaries) {
                 ExtendedManagedObject* relatedObject =
@@ -96,7 +96,7 @@
         }
         else if (value != nil) {
             // This is an attribute
-            [newObject setValue:value forKey:key];
+            [self setValue:value forKey:key];
         }
     }
 }
